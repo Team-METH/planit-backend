@@ -5,7 +5,7 @@ const app = express();
 const serverStartDate = Date.now();
 const PORT = 8000;
 const connectDB = require("./db/conn");
-
+const logger = require("./utils/logger");
 connectDB();
 app.get("/health", (req: Request, res: Response) => {
   const healthTimeInSeconds = (Date.now() - serverStartDate) / 1000;
@@ -20,5 +20,5 @@ app.get("/health", (req: Request, res: Response) => {
 
 app.listen(PORT, (error: Error) => {
   if (error) console.error();
-  console.log(`Listening to the port ${PORT}`);
+  logger.info(`Listening to the port ${PORT}`);
 });
