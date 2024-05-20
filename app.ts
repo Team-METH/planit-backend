@@ -4,7 +4,9 @@ const express = require("express");
 const app = express();
 const serverStartDate = Date.now();
 const PORT = 8000;
+const connectDB = require("./db/conn");
 
+connectDB();
 app.get("/health", (req: Request, res: Response) => {
   const healthTimeInSeconds = (Date.now() - serverStartDate) / 1000;
 
