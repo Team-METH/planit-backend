@@ -35,13 +35,12 @@ const getEvents = async (req: Request, res: CustomResponse) => {
   try {
     const events = await Event.find({});
 
-    console.log({ events });
-
     return res.json({
       message: "Events fetched successfully",
       data: events,
     });
   } catch (error: any) {
+    logger.error(error.message);
     return res.status(500).json({
       message: "Couldn't get events. Please try again later",
       error: error.message,
@@ -49,7 +48,7 @@ const getEvents = async (req: Request, res: CustomResponse) => {
   }
 };
 
-const updateEvent = async (req: Request, res: CustomResponse) => {
+const updateEventById = async (req: Request, res: CustomResponse) => {
   try {
     const eventUpdatePayload: Record<string, any> = {
       eventId: req.params?.eventId,
@@ -84,10 +83,28 @@ const updateEvent = async (req: Request, res: CustomResponse) => {
       data: updatedEvent,
     });
   } catch (error: any) {
+    logger.error(error.message);
     return res.status(500).json({
-      message: "Couldn't update events. Please try again later",
+      message: "Couldn't update event. Please try again later",
       error: error.message,
     });
   }
 };
-module.exports = { createEvent, getEvents, updateEvent };
+
+const deleteEventById = async (req: Request, res: CustomResponse) => {
+  try {
+    await Event.findOneAndDelete({ _id: req.params.eventId });
+
+    return res.json({
+      message: "Event deleted successfully",
+      data: null,
+    });
+  } catch (error: any) {
+    logger.error(error.message);
+    return res.status(500).json({
+      message: "Couldn't delete event. Please try again later",
+      error: error.message,
+    });
+  }
+};
+module.exports = { createEvent, getEvents, updateEventById, deleteEventById };

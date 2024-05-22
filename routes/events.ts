@@ -8,8 +8,12 @@ router.post("/", eventsValidator.createEvent, eventsController.createEvent);
 router.get("/", eventsController.getEvents);
 router.patch(
   "/:eventId",
-  eventsValidator.updateEvent,
-  eventsController.updateEvent
+  eventsValidator.updateEventById,
+  eventsController.updateEventById
 );
-
+router.delete(
+  "/:eventId",
+  eventsValidator.deleteEventById,
+  eventsController.deleteEventById
+);
 module.exports = router;

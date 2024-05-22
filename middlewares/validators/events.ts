@@ -26,7 +26,7 @@ const createEvent = async (
   }
 };
 
-const updateEvent = async (
+const updateEventById = async (
   req: Request,
   res: CustomResponse,
   next: NextFunction
@@ -52,4 +52,22 @@ const updateEvent = async (
     res.boom.badRequest(error.details[0].message);
   }
 };
-module.exports = { createEvent, updateEvent };
+
+const deleteEventById = async (
+  req: Request,
+  res: CustomResponse,
+  next: NextFunction
+) => {
+  try {
+    const schema = joi.object({
+      eventId: joi.string().required(),
+    });
+
+    await schema.validateAsync(req.params);
+    next();
+  } catch (error: any) {
+    logger.error(`Error deleting event: ${error}`);
+    res.boom.badRequest(error.details[0].message);
+  }
+};
+module.exports = { createEvent, updateEventById, deleteEventById };
