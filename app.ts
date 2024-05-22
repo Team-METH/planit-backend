@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { CustomResponse } from "./types/common";
 
 const express = require("express");
@@ -11,6 +11,9 @@ const logger = require("./utils/logger");
 connectDB();
 
 app.use(boom());
+
+app.use(express.json());
+app.use("/events", require("./routes/events"));
 
 app.get("/health", (req: Request, res: Response) => {
   const healthTimeInSeconds = (Date.now() - serverStartDate) / 1000;
