@@ -48,4 +48,46 @@ const getEvents = async (req: Request, res: CustomResponse) => {
     });
   }
 };
-module.exports = { createEvent, getEvents };
+
+const updateEvent = async (req: Request, res: CustomResponse) => {
+  try {
+    const eventUpdatePayload: Record<string, any> = {
+      eventId: req.params?.eventId,
+    };
+
+    if (req.body?.name) {
+      eventUpdatePayload.name = req.body.name;
+    }
+
+    if (req.body?.venueId) {
+      eventUpdatePayload.venueId = req.body.venueId;
+    }
+
+    if (req.body?.endDateTime) {
+      eventUpdatePayload.endDateTime = req.body.endDateTime;
+    }
+
+    if (req.body?.startedDateTime) {
+      eventUpdatePayload.startedDateTime = req.body.startedDateTime;
+    }
+
+    await Event.findOneAndUpdate(
+      {
+        _id: req.params.eventId,
+      },
+      eventUpdatePayload
+    );
+    const updatedEvent = await Event.findById(req.params.eventId);
+
+    return res.json({
+      message: "Event updated successfully",
+      data: updatedEvent,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: "Couldn't update events. Please try again later",
+      error: error.message,
+    });
+  }
+};
+module.exports = { createEvent, getEvents, updateEvent };

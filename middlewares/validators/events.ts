@@ -25,4 +25,31 @@ const createEvent = async (
     res.boom.badRequest(error.details[0].message);
   }
 };
-module.exports = { createEvent };
+
+const updateEvent = async (
+  req: Request,
+  res: CustomResponse,
+  next: NextFunction
+) => {
+  try {
+    const reqObject = {
+      eventId: req.params?.eventId,
+      ...req.body,
+    };
+
+    const schema = joi.object({
+      eventId: joi.string().required(),
+      name: joi.string().optional(),
+      startedDateTime: joi.string().optional(),
+      endDateTime: joi.string().optional(),
+      venueId: joi.string().optional(),
+    });
+
+    await schema.validateAsync(reqObject);
+    next();
+  } catch (error: any) {
+    logger.error(`Error updating event: ${error}`);
+    res.boom.badRequest(error.details[0].message);
+  }
+};
+module.exports = { createEvent, updateEvent };

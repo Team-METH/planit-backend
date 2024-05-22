@@ -6,5 +6,10 @@ const router = express.Router();
 
 router.post("/", eventsValidator.createEvent, eventsController.createEvent);
 router.get("/", eventsController.getEvents);
+router.patch(
+  "/:eventId",
+  eventsValidator.updateEvent,
+  eventsController.updateEvent
+);
 
 module.exports = router;
