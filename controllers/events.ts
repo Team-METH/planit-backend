@@ -21,11 +21,11 @@ const createEvent = async (req: Request, res: CustomResponse) => {
       data: event,
     });
   } catch (error: any) {
+    logger.error(error.message);
     return res.status(500).json({
       message: "Couldn't create event. Please try again later",
       error: error.message,
     });
-    logger.error(error.message);
   }
 };
 module.exports = { createEvent };
